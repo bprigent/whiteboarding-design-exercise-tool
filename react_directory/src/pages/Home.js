@@ -4,7 +4,7 @@ function Home() {
     return (
     <div>
         <Nav />
-        <h1>Welcome to Home Page</h1>
+        <h1>Welcome to my tool folks!</h1>
     </div>
     );
 }
