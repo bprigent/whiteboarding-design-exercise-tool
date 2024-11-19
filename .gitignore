@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+#exclude transformer
+transformers/
+
+# Exclude Hugging Face model files
+llama_directory/llama_model/
+llama_directory/llama_venv/
+
+
+# Build output
+build/
+dist/
+
+# Logs
+*.log
+
+# Environment variables
+.env
