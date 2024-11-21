@@ -5,8 +5,8 @@ node_modules/
 transformers/
 
 # Exclude Hugging Face model files
-llama_directory/llama_model/
-llama_directory/llama_venv/
+python_directory/llm_model/
+python_directory/llama_venv/
 
 
 # Build output

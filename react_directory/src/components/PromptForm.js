@@ -1,27 +1,34 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setInputValue, setApiResponse } from '../store/slices/formSlice';
+import { setInputValue, setApiResponse, setStatus } from '../store/slices/formSlice';
 import './PromptForm.scss';
+import { generateResponse } from '../apiCalls/generate';
 
 function PromptForm() {
   // Initialize the dispatch function to update the Redux store
   const dispatch = useDispatch();
   
-  // Get input value from store
+  // Get input value and status from store
   const inputValue = useSelector((state) => state.form.inputValue);
-  
+  const status = useSelector((state) => state.form.status);
+
   // update the input value when user types
   const handleOnChange = (e) => {dispatch(setInputValue(e.target.value))}
 
   // Handle the form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page
-    
-    // Dispatch the API response to the Redux store
-    const apiResponse = 'some value from backend'
-    dispatch(setApiResponse(apiResponse));
-    console.log('Submitted value:', inputValue);
-    dispatch(setApiResponse(apiResponse));
+    try {
+      dispatch(setStatus('generating')); // Update status to "generating"
+      dispatch(setApiResponse('')); // Clear previous response
+
+      const response = await generateResponse(inputValue); // Call the API
+      dispatch(setApiResponse(response)); // Update the API response
+    } catch (error) {
+      dispatch(setApiResponse('Error generating response.'));
+    } finally {
+      dispatch(setStatus('idle')); // Reset status to "idle"
+    }
   };
   
 
@@ -37,7 +44,7 @@ function PromptForm() {
         />
       </div>
       <button type="submit" className="form-submit">
-        Submit
+        {status === 'generating' ? 'Generating...' : 'Submit'}
       </button>
     </form>
   );

@@ -11,7 +11,7 @@ def generate_response(prompt, tokenizer, model):
     output = model.generate(**inputs)
     return tokenizer.decode(output[0], skip_special_tokens=True)
 
-model_path = "/Users/prige/Desktop/llama_project/llama_directory/llama_model"  # Update this path if needed
+model_path = "/Users/prige/Desktop/llama_project/python_directory/llm_model"  # Update this path if needed
 tokenizer, model = load_model(model_path)
 
 prompt = "Explain the basics of UX design."
