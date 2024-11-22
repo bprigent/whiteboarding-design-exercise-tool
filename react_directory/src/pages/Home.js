@@ -6,7 +6,7 @@ function Home() {
     return (
     <div>
         <Nav />
-        <h1>Welcome to my tool folks!</h1>
+        <h1>Designer, this is a conversational whiteboarding tool, powered by AI.</h1>
         <PromptForm />
         <Result />
     </div>
