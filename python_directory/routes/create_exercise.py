@@ -1,10 +1,10 @@
-from flask import Blueprint, request, jsonify
-from services.llama_model import generate_response
+from flask import Blueprint, request, jsonify, Response, stream_with_context
+from services.llama_model import generate_response_stream
 
-# Create a Blueprint for the "create-exercise" route.
+# Create a Blueprint for "create-exercise" route
 create_exercise_bp = Blueprint("create_exercise", __name__)
 
-# Pre-tokenized prompt cache (initialize during app startup).
+# Pre-tokenized prompt cache (initialize during app startup)
 pre_tokenized_prompt = None
 
 # Define a route for handling POST requests to "/create-exercise".
@@ -28,13 +28,11 @@ def create_exercise():
 
     # Generate a response using the pre-tokenized prompt
     max_length = 200
-    response = generate_response(
-        None, tokenizer, model, max_length, pre_tokenized_input=pre_tokenized_prompt
-    )
-
-    print(f"Returning exercise: {response}")
+    # Streaming function
+    def stream():
+        for token in generate_response_stream(None, tokenizer, model, max_length=max_length, pre_tokenized_input=pre_tokenized_prompt):
+            yield token
     
-    # Return exercise as JSON
-    exercise = {"prompt": "constant prompt", "response": response}
-    return jsonify(exercise)
+    # Stream the response
+    return Response(stream_with_context(stream()), content_type="text/plain")
 

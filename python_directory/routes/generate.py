@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services.llama_model import generate_response
+from services.llama_model import generate_response_stream
 
 # Create a Blueprint for the "generate" route.
 # A Blueprint is a modular way to define routes and handlers, making the code more organized.
@@ -24,6 +24,6 @@ def generate():
         return jsonify({"error": "No prompt provided"}), 400
     
     # Generate a response using the provided prompt, tokenizer, and model.
-    response = generate_response(prompt, tokenizer, model, 100)
+    response = generate_response_stream(prompt, tokenizer, model, 100)
     # Return the generated response as a JSON object.
     return jsonify({"response": response})

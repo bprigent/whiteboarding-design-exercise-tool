@@ -5,7 +5,7 @@ const exerciseSlice = createSlice({
   initialState: {
     timer: '',
     prompt: '', 
-    status: 'idle', 
+    status: 'idle', // idle, working, success, error
   },
   reducers: {
     setTimer: (state, action) => {

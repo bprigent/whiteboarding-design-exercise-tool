@@ -9,7 +9,6 @@ const Prompt = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
     const handleCancel = () => {
         dispatch(setPrompt(''));
         dispatch(setStatus('idle'));
@@ -25,7 +24,7 @@ const Prompt = () => {
             {status === 'working' && (
                 <Box>
                     <Typography variant="body1">
-                        Generating your custom exercise...
+                        {prompt || "Generating your custom exercise..."} {/* Show partial prompt */}
                     </Typography>
                     <Button variant="outlined" color="secondary" onClick={handleCancel} sx={{ mt: 2 }}>
                         Cancel

@@ -16,7 +16,7 @@ const ExerciseForm = () => {
             dispatch(setPrompt('')); 
             navigate('/exercise');
 
-            const serverResponse = await createExercise();
+            const serverResponse = await createExercise(dispatch);
             
             dispatch(setPrompt(serverResponse)); 
             dispatch(setStatus('success'));

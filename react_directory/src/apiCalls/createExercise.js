@@ -1,4 +1,7 @@
-export async function createExercise() {
+import { setPrompt } from '../store/slices/exerciseSlice';
+
+
+export async function createExercise(dispatch) {
     
     const API_BASE_URL = "http://127.0.0.1:5000";
     const prompt = `
@@ -22,8 +25,22 @@ export async function createExercise() {
             throw new Error(`API error: ${response.statusText}`);
         }
 
-        const data = await response.json();
-        return data.response; 
+        // Read the response stream
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let result = "";
+
+        // Process the response stream
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            const chunk = decoder.decode(value, { stream: true });
+            result += chunk;
+            console.log(result); // Incrementally log each chunk of the response
+            dispatch(setPrompt(result)); // Dispatch partial result to Redux store
+        }
+
+        return result.trim(); // Final output
 
     } catch (error) {
         console.error("Error fetching response:", error);
