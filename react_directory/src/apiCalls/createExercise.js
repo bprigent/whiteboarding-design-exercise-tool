@@ -5,13 +5,17 @@ export async function createExercise(dispatch) {
     
     const API_BASE_URL = "http://127.0.0.1:5000";
     const prompt = `
-        Generate a UX design whiteboarding exercise for beginner designers. 
-        This will me a sentence of maximum 20 words. 
-        Example: Build a tool that helps {type of people} achieve {goal}. You can format it any way you want
-        Only response with one single sentence, nothing else. 
-        Do not guide the designer with additional help.
-        Before answering, make sure you are only respondoing with the design whiteboarding exercise sentence and nothing else.
-        Only answer one sentence, not more.
+        Generate a UX design whiteboarding exercise prompt for beginner designers. 
+        Here is the format to create a UX design whiteboarding exercise prompt: Build a {1} that helps {2} achieve {3}.
+        {1} is the type of tool. This can be an app, a website, a screen, a chrome extension, anything
+        {2} is the user, it is a persona, a type of person, with special characteristics. 
+        {3} is the goal, what we want this tool to help people do.
+        This prompt will be one sentence, and maximum 20 words. It can be less 
+        Your answer should only contain the prompt, nothing else, ever.
+        Do not add anything else than the prompt in your answer, do not help, provide guidance, etc.
+        Before answering, make sure you are only respondoing with the design whiteboarding exercise prompt and nothing else.
+        Write the prompt only once in your answer. 
+        Do not include any part of this message above in your answer.
     `;
     
     try {

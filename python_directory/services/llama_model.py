@@ -10,11 +10,19 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
+# Detect device
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+logger.info(f"Using device: {device}")
+
 
 
 ############################################################
 # load model
 def load_model(model_path):
+    """
+    Load the model and tokenizer with 8-bit quantization using bitsandbytes.
+    """
+
     # Ensure the cache directory exists
     os.makedirs(CACHE_DIR, exist_ok=True)
     tokenizer_cache_path = os.path.join(CACHE_DIR, "tokenizer.pt")
@@ -26,15 +34,21 @@ def load_model(model_path):
         tokenizer = torch.load(tokenizer_cache_path)
         model = torch.load(model_cache_path)
     else:
-        print("Loading tokenizer and model from the original path...")
+        logger.info("Loading tokenizer and model with quantization...")
         tokenizer = AutoTokenizer.from_pretrained(model_path)
-        model = AutoModelForCausalLM.from_pretrained(model_path)
+        model = AutoModelForCausalLM.from_pretrained(
+            model_path,
+            device_map=None,  # Do not auto-map devices, we are running this on macbook
+            cache_dir=CACHE_DIR,
+        )
 
         # Save them to cache
-        print("Caching tokenizer and model...")
+        logger.info("Caching tokenizer and model...")
         torch.save(tokenizer, tokenizer_cache_path)
         torch.save(model, model_cache_path)
 
+    # Move model to the detected device
+    model = model.to(device)
     return tokenizer, model
 
 
@@ -60,7 +74,7 @@ class TokenStoppingCriteria(StoppingCriteria):
 
 ############################################################
 # Generate a response based on the given prompt or pre-tokenized input.
-def generate_response_stream(prompt, tokenizer, model, max_length=100, pre_tokenized_input=None):
+def generate_response_stream(prompt, tokenizer, model, max_length, pre_tokenized_input=None):
     """
     Stream token-by-token responses for a given prompt.
     """
@@ -75,13 +89,14 @@ def generate_response_stream(prompt, tokenizer, model, max_length=100, pre_token
             truncation=True,
             max_length=model.config.max_position_embeddings,
         )
+
+    # Move inputs to the detected device
+    input_ids = inputs["input_ids"].to(device)
+    attention_mask = inputs["attention_mask"].to(device)
     
+    # log
     logger.info(f"Input IDs shape: {inputs['input_ids'].shape}")
     logger.info(f"Attention mask shape: {inputs['attention_mask'].shape}")
-
-    # Initial input state for incremental generation
-    input_ids = inputs["input_ids"]
-    attention_mask = inputs["attention_mask"]
 
     for _ in range(max_length):
         try:
@@ -92,15 +107,16 @@ def generate_response_stream(prompt, tokenizer, model, max_length=100, pre_token
                 return_dict_in_generate=True,
                 output_scores=True,
                 eos_token_id=tokenizer.eos_token_id,
+                use_cache=True,  # Enable KV caching, to go faster
             )
 
             # Extract the new token
             next_token_id = outputs.sequences[0, -1].unsqueeze(0)
 
             # Update input_ids and attention_mask
-            input_ids = torch.cat([input_ids, next_token_id.unsqueeze(0)], dim=-1)
+            input_ids = torch.cat([input_ids, next_token_id.unsqueeze(0)], dim=-1).to(device)
             attention_mask = torch.cat(
-                [attention_mask, torch.ones((1, 1), dtype=torch.long)], dim=-1
+                [attention_mask, torch.ones((1, 1), dtype=torch.long).to(device)], dim=-1
             )
 
             # Decode the token and log it
