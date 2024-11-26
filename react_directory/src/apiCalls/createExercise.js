@@ -5,9 +5,9 @@ export async function createExercise() {
         Generate a UX design whiteboarding exercise for beginner designers. 
         This will me a sentence of maximum 20 words. 
         Example: Build a tool that helps {type of people} achieve {goal}. You can format it any way you want
-        Only response with the sentence and nothing else. 
+        Only response with one single sentence, nothing else. 
         Do not guide the designer with additional help.
-        Before answer, make sure you are only respondoing with the design whiteboarding exercise sentence and nothing else.
+        Before answering, make sure you are only respondoing with the design whiteboarding exercise sentence and nothing else.
         Only answer one sentence, not more.
     `;
     

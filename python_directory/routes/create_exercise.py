@@ -4,6 +4,9 @@ from services.llama_model import generate_response
 # Create a Blueprint for the "create-exercise" route.
 create_exercise_bp = Blueprint("create_exercise", __name__)
 
+# Pre-tokenized prompt cache (initialize during app startup).
+pre_tokenized_prompt = None
+
 # Define a route for handling POST requests to "/create-exercise".
 @create_exercise_bp.route("/create-exercise", methods=["POST"])
 def create_exercise():
@@ -14,22 +17,24 @@ def create_exercise():
 
     # Extract JSON data from the incoming request.
     data = request.json 
-    # Get the "prompt" field from the request data.
     prompt = data.get("prompt", "")
-    # Check if the prompt is missing.
     if not prompt:
         return jsonify({"error": "No prompt provided"}), 400
-    
-    # Log the incoming request for debugging (optional).
-    print(f"Received prompt: {prompt}")
-    
-    # Generate a response using the provided prompt.
-    max_length=200
-    response = generate_response(prompt, tokenizer, model, max_length)
+
+    # Use the pre-tokenized prompt if available
+    global pre_tokenized_prompt
+    if pre_tokenized_prompt is None:
+        pre_tokenized_prompt = tokenizer(prompt, return_tensors="pt")
+
+    # Generate a response using the pre-tokenized prompt
+    max_length = 200
+    response = generate_response(
+        None, tokenizer, model, max_length, pre_tokenized_input=pre_tokenized_prompt
+    )
 
     print(f"Returning exercise: {response}")
     
     # Return exercise as JSON
-    exercise = {"prompt": prompt, "response": response}
+    exercise = {"prompt": "constant prompt", "response": response}
     return jsonify(exercise)
 
