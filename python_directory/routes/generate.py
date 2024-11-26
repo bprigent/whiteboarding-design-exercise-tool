@@ -24,6 +24,6 @@ def generate():
         return jsonify({"error": "No prompt provided"}), 400
     
     # Generate a response using the provided prompt, tokenizer, and model.
-    response = generate_response(prompt, tokenizer, model)
+    response = generate_response(prompt, tokenizer, model, 100)
     # Return the generated response as a JSON object.
     return jsonify({"response": response})

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import formReducer from './slices/formSlice'; // We'll create this next
+import formReducer from './slices/formSlice'; 
+import exerciseReducer from './slices/exerciseSlice';
 
 const store = configureStore({
   reducer: {
-    form: formReducer, // Add reducers here
+    form: formReducer, 
+    exercise: exerciseReducer,
   },
 });
 

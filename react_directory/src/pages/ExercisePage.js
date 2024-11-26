@@ -1,16 +1,16 @@
 import React from 'react';
 import TwoColPage from '../components/TwoColPage';
 import Image from '../components/Image';
-import ExerciseForm from '../components/ExerciseForm';
+import Prompt from '../components/Prompt';
 
-const FormPage = () => {
+const ExercisePage = () => {
 
     return (
         <TwoColPage
             leftContent={<Image/>}
-            rightContent={<ExerciseForm/>}
+            rightContent={<Prompt/>}
         />
     );
 };
 
-export default FormPage;
+export default ExercisePage;
