@@ -1,16 +1,21 @@
-const API_BASE_URL = "http://127.0.0.1:5000"; // Update this to match your backend's URL if different
-
 export async function createExercise() {
     
-    const prompt = "Generate a UX design whiteboarding exercise for beginner desginers. Make it clear and under 200 character.";
+    const API_BASE_URL = "http://127.0.0.1:5000";
+    const prompt = `
+        Generate a UX design whiteboarding exercise for beginner designers. 
+        This will me a sentence of maximum 20 words. 
+        Example: Build a tool that helps {type of people} achieve {goal}. You can format it any way you want
+        Only response with the sentence and nothing else. 
+        Do not guide the designer with additional help.
+        Before answer, make sure you are only respondoing with the design whiteboarding exercise sentence and nothing else.
+        Only answer one sentence, not more.
+    `;
     
     try {
         const response = await fetch(`${API_BASE_URL}/create-exercise`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ prompt }),
         });
 
         if (!response.ok) {
@@ -18,9 +23,12 @@ export async function createExercise() {
         }
 
         const data = await response.json();
-        return data.response; // Return the generated response
+        return data.response; 
+
     } catch (error) {
         console.error("Error fetching response:", error);
         throw error;
     }
 }
+
+

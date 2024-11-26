@@ -15,13 +15,16 @@ const ExerciseForm = () => {
             dispatch(setStatus('working')); 
             dispatch(setPrompt('')); 
             navigate('/exercise');
+
             const serverResponse = await createExercise();
+            
             dispatch(setPrompt(serverResponse)); 
             dispatch(setStatus('success'));
-          } catch (error) {
+        } catch (error) {
+            console.error("Error generating response:", error);
             dispatch(setPrompt('Error generating response.'));
-            dispatch(setStatus('error')); 
-          }
+            dispatch(setStatus('error'));
+        }
     }
 
 

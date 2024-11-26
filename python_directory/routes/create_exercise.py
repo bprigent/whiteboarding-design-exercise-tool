@@ -26,11 +26,10 @@ def create_exercise():
     # Generate a response using the provided prompt.
     max_length=200
     response = generate_response(prompt, tokenizer, model, max_length)
-    # Wrap the response with additional exercise details if necessary.
-    exercise = {
-        "prompt": prompt,
-        "response": response
-    }
-    # Return the generated exercise as a JSON object.
+
+    print(f"Returning exercise: {response}")
+    
+    # Return exercise as JSON
+    exercise = {"prompt": prompt, "response": response}
     return jsonify(exercise)
 
