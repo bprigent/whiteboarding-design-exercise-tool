@@ -1,14 +1,14 @@
 import React from 'react';
 import TwoColPage from '../components/TwoColPage';
 import Image from '../components/Image';
-import ExerciseForm from '../components/ExerciseForm';
+import Form from '../components/Form';
 
 const FormPage = () => {
 
     return (
         <TwoColPage
             leftContent={<Image/>}
-            rightContent={<ExerciseForm/>}
+            rightContent={<Form/>}
         />
     );
 };

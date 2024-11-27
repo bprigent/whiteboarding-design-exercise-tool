@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPrompt, setStatus } from "../store/slices/exerciseSlice";
 import { useNavigate } from 'react-router-dom';
 
-const Prompt = () => {
+const ExerciseResult = () => {
     const { prompt, status } = useSelector((state) => state.exercise);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -57,4 +57,4 @@ const Prompt = () => {
     );
 };
 
-export default Prompt;
+export default ExerciseResult;
