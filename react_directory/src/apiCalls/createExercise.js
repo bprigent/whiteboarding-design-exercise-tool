@@ -1,4 +1,4 @@
-import { setPrompt } from '../store/slices/exerciseSlice';
+import { setPrompt, setStatus } from '../store/slices/exerciseSlice';
 
 
 export async function createExercise(dispatch, experience, product, maturity, time) {
@@ -16,11 +16,11 @@ export async function createExercise(dispatch, experience, product, maturity, ti
         {2} is the user, it is a persona, a type of person, with specific characteristics. 
         {3} is the goal, what we want this tool to help people do.
         You don't have to follow this format exactly, but it is a good inspiration. It is more important that the combined sentence be: Coherent, Realistic, Clear, Creative, Precise, and Understandable.
-        The prompt will be one single sentence only, maximum 20 words, tt can be less if you want.
+        The prompt will be one single sentence only, maximum 25 words. Never go above 25 words.
         Your answer should contain the prompt sentence once, only once. 
-        Do not include any part of this message above in your answer. Never ever mention in the prompt: the ${time}, their years of experience, "${product}" or "${maturity}" if they specified it. 
-        Your answer should only contain the prompt, nothing else, ever. Do not add anything else than the prompt in your answer.
-        Before answering, make sure you are only respondoing with the design whiteboarding exercise prompt and nothing else.
+        Do not include any part of this message above in your answer. Never mention in the prompt: the ${time}, their years of experience, "${product}" or "${maturity}" if they specified it. 
+        Your answer should only contain the prompt, nothing else. Do not add anything else than the prompt in your answer. Never ask follow up questions.
+        Before answering, make sure you are only responding with the design whiteboarding exercise prompt, in one sentece less than 25 words long. Do not add anything else to your answer, ever.
     `;
     
     try {
@@ -47,6 +47,7 @@ export async function createExercise(dispatch, experience, product, maturity, ti
             result += chunk;
             console.log(result); // Incrementally log each chunk of the response
             dispatch(setPrompt(result)); // Dispatch partial result to Redux store
+            dispatch(setStatus('working')); 
         }
 
         return result.trim(); // Final output

@@ -1,8 +1,12 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
 import { setPrompt, setStatus } from "../store/slices/exerciseSlice";
 import { useNavigate } from 'react-router-dom';
+import LoadingScreen from './LoadingPrompt';
+import { Description, Timer } from '@mui/icons-material';
+import { OrangeButton } from './Buttons';
+
 
 const ExerciseResult = () => {
     const { prompt, status } = useSelector((state) => state.exercise);
@@ -16,30 +20,45 @@ const ExerciseResult = () => {
     };
 
     return (
-        <Box sx={{padding: 4}}>
-            <Typography variant="h4" component="h1">
-                Your Exercise
-            </Typography>
+        <Box sx={{
+            padding: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            alignItems: 'center', // Centers children horizontally
+            justifyContent: 'center',
+        }}>
+            <Box sx={{
+                height:'104px'
+            }}/>
 
-            {status === 'working' && (
-                <Box>
-                    <Typography variant="body1">
-                        {prompt || "Generating your custom exercise..."} {/* Show partial prompt */}
-                    </Typography>
-                    <Button variant="outlined" color="secondary" onClick={handleCancel} sx={{ mt: 2 }}>
-                        Cancel
-                    </Button>
-                </Box>
+            {status === 'warming' && (
+                <LoadingScreen
+                    heading="Generating your prompt..."
+                    tips={[
+                        {
+                        icon: <Description sx={{ color: '#9e9e9e' }} />, // Icon styling
+                        text: "Don't forget to get your template ready.",
+                        },
+                        {
+                        icon: <Timer sx={{ color: '#9e9e9e' }} />,
+                        text: 'Your 60 minute timer will start after.',
+                        },
+                    ]}
+                />
             )}
 
-            {status === 'success' && prompt && (
-                <Box>
-                    <Typography variant="body1">
-                        {prompt}
+            {(status === 'working' || status === 'success') && (
+                <Box sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Typography variant="body1" sx={{ fontFamily:'Gambarino', fontSize:'40px', textAlign:'center'}}>
+                        "{prompt}"
                     </Typography>
-                    <Button variant="outlined" color="secondary" onClick={handleCancel} sx={{ mt: 2 }}>
-                        Cancel
-                    </Button>
                 </Box>
             )}
 
@@ -48,11 +67,14 @@ const ExerciseResult = () => {
                     <Typography variant="body1" color="error">
                         There was an error generating your exercise. Please try again.
                     </Typography>
-                    <Button variant="outlined" color="secondary" onClick={handleCancel} sx={{ mt: 2 }}>
-                        Cancel
-                    </Button>
                 </Box>
             )}
+
+            <Box sx={{paddingY: 4}}>
+                <OrangeButton onClick={handleCancel}>
+                    I am done with this exercise
+                </OrangeButton>
+            </Box>
         </Box>
     );
 };

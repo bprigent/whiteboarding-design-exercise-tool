@@ -6,7 +6,7 @@ import { setPrompt, setStatus } from '../store/slices/exerciseSlice';
 import { createExercise } from "../apiCalls/createExercise";
 import TextPairing from './TextPairing';
 import ButtonGroup from './ButtonGroup';
-import PrimaryButton from './PrimaryButton';
+import {PrimaryButtonLarge} from './Buttons';
 
 const Form = () => {
 
@@ -25,7 +25,7 @@ const Form = () => {
     const navigate = useNavigate();
     const handleClick = async () => {
         try {
-            dispatch(setStatus('working')); 
+            dispatch(setStatus('warming')); 
             dispatch(setPrompt('')); 
             navigate('/exercise');
             const serverResponse = await createExercise(dispatch, experience, product, maturity, time);
@@ -103,9 +103,9 @@ const Form = () => {
                 />
             </Box>
             <Box>
-                <PrimaryButton onClick={handleClick}>
+                <PrimaryButtonLarge onClick={handleClick}>
                     Create custom exercise
-                </PrimaryButton>
+                </PrimaryButtonLarge>
             </Box>
         </Box>
     );
