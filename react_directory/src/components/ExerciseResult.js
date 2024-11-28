@@ -10,6 +10,8 @@ import { OrangeButton } from './Buttons';
 
 const ExerciseResult = () => {
     const { prompt, exerciseStatus } = useSelector((state) => state.exercise);
+    const { remainingTime } = useSelector((state) => state.timer);
+    const remainingTimeInMinutes = remainingTime / 60; 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -42,7 +44,7 @@ const ExerciseResult = () => {
                         },
                         {
                         icon: <Timer sx={{ color: '#9e9e9e' }} />,
-                        text: 'Your 60 minute timer will start after.',
+                        text: `Your ${remainingTimeInMinutes} minute timer will start after.`,
                         },
                     ]}
                 />

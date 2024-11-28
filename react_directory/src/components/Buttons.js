@@ -46,3 +46,27 @@ export const OrangeButton = ({ children, onClick, ...props }) => (
     {children}
   </Button>
 );
+
+
+export const WhiteButton = ({ children, onClick, ...props }) => (
+  <Button
+    onClick={onClick}
+    variant="contained"
+    sx={{
+      width:'100%',
+      backgroundColor: '#fff',
+      fontSize:'15px',
+      color: '#000',
+      textTransform: 'none',
+      fontWeight: 'bold',
+      borderRadius: '12px',
+      padding: '8px 16px',
+      '&:hover': {
+        backgroundColor: '#fdfdfd',
+      },
+    }}
+    {...props}
+  >
+    {children}
+  </Button>
+);

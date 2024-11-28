@@ -1,7 +1,10 @@
 import React from 'react';
 import { CircularProgress, Box, Typography, Paper } from '@mui/material';
 
+
 const LoadingScreen = ({ heading, tips }) => {
+  
+  
   return (
     <Box
       sx={{
