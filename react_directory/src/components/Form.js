@@ -3,18 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { Box } from "@mui/material";
 import { useDispatch } from 'react-redux';
 import { setPrompt, setStatus } from '../store/slices/exerciseSlice';
+import { setRemainingTime } from '../store/slices/timerSlice';
 import { createExercise } from "../apiCalls/createExercise";
 import TextPairing from './TextPairing';
 import ButtonGroup from './ButtonGroup';
-import {PrimaryButtonLarge} from './Buttons';
+import { PrimaryButtonLarge } from './Buttons';
 
 const Form = () => {
 
     // Handle local states for all form variants
-    const [experience, setExperience] = useState('');
-    const [product, setProduct] = useState('');
-    const [maturity, setMaturity] = useState('');
-    const [time, setTime] = useState('');
+    const [experience, setExperience] = useState('2to5');
+    const [product, setProduct] = useState('digital');
+    const [maturity, setMaturity] = useState('incremental');
+    const [time, setTime] = useState(45);
     const handleExperienceChange = (_, newExperience) => setExperience(newExperience);
     const handleProductChange = (_, newProduct) => setProduct(newProduct);
     const handleMaturityChange = (_, newMaturity) => setMaturity(newMaturity);
@@ -27,6 +28,11 @@ const Form = () => {
         try {
             dispatch(setStatus('warming')); 
             dispatch(setPrompt('')); 
+            console.log(`timer is at: ${time}`)
+            console.log(`experience is at: ${experience}`)
+            console.log(`product is at: ${product}`)
+            console.log(`maturity is at: ${maturity}`)
+            dispatch(setRemainingTime(parseInt(time) * 60)); // Set timer duration
             navigate('/exercise');
             const serverResponse = await createExercise(dispatch, experience, product, maturity, time);
             dispatch(setPrompt(serverResponse)); 
@@ -94,9 +100,9 @@ const Form = () => {
                 <ButtonGroup
                     label="Timer"
                     options={[
-                        { value: '30min', label: '30 min' },
-                        { value: '45min', label: '45 min', defaultValue: true },
-                        { value: '60min', label: '60 min' },
+                        { value: 30, label: '30 min' },
+                        { value: 45, label: '45 min', defaultValue: true },
+                        { value: 60, label: '60 min' },
                     ]}
                     value={time}
                     onChange={handleTimeChange}

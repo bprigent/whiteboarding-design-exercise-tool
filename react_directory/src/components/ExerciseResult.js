@@ -9,7 +9,7 @@ import { OrangeButton } from './Buttons';
 
 
 const ExerciseResult = () => {
-    const { prompt, status } = useSelector((state) => state.exercise);
+    const { prompt, exerciseStatus } = useSelector((state) => state.exercise);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ const ExerciseResult = () => {
                 height:'104px'
             }}/>
 
-            {status === 'warming' && (
+            {exerciseStatus === 'warming' && (
                 <LoadingScreen
                     heading="Generating your prompt..."
                     tips={[
@@ -48,7 +48,7 @@ const ExerciseResult = () => {
                 />
             )}
 
-            {(status === 'working' || status === 'success') && (
+            {(exerciseStatus === 'working' || exerciseStatus === 'success') && (
                 <Box sx={{
                     flexGrow: 1,
                     display: 'flex',
@@ -62,7 +62,7 @@ const ExerciseResult = () => {
                 </Box>
             )}
 
-            {status === 'error' && (
+            {exerciseStatus === 'error' && (
                 <Box>
                     <Typography variant="body1" color="error">
                         There was an error generating your exercise. Please try again.

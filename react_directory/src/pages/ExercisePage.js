@@ -1,13 +1,13 @@
 import React from 'react';
 import TwoColPage from '../components/TwoColPage';
-import Image from '../components/Image';
 import ExerciseResult from '../components/ExerciseResult';
+import Timer from '../components/Timer';
 
 const ExercisePage = () => {
 
     return (
         <TwoColPage
-            leftContent={<Image/>}
+            leftContent={<Timer/>}
             rightContent={<ExerciseResult/>}
         />
     );
