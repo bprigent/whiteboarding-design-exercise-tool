@@ -20,7 +20,7 @@ const Image = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${photo})`, 
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url(${photo})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 zIndex: 1, 
@@ -46,7 +46,7 @@ const Image = () => {
                     <Typography
                         sx={{
                             fontSize: '14px',
-                            fontWeight: '800',
+                            fontWeight: '700',
                             lineHeight: '1.2',
                         }}
                     >

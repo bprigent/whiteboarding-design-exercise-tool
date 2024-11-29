@@ -58,19 +58,32 @@ const Timer = () => {
       >
 
         {formatDigits(remainingTime).map((digit, index) => (
-          <Box
-            key={index}
-            sx={{
-              padding: '16px',
-              borderRadius: '8px',
-              backgroundColor: '#f9f9f9',
-              border: '1px solid #E5E5E5',
-              width: '88px',
-              textAlign: 'center',
-            }}
-          >
-            {digit}
-          </Box>
+          digit === ':' ? (
+            <Box
+              key={index}
+              sx={{
+                fontSize: '4rem',
+                fontWeight: '700',
+                color: '#E5E5E5', 
+                paddingX: 1, 
+              }}
+            >
+              {digit}
+            </Box>
+            ) : (
+            <Box
+              key={index}
+              sx={{
+                padding: '16px',
+                borderRadius: '8px',
+                backgroundColor: '#f9f9f9',
+                border: '1px solid #E5E5E5',
+                width: '88px',
+                textAlign: 'center',
+              }}
+            >
+              {digit}
+            </Box> )
         ))}
       </Box>
 
@@ -85,9 +98,9 @@ const Timer = () => {
         {exerciseStatus === 'success' ? (
           <Box>
             {timerStatus === 'paused' ? (
-              <WhiteButton onClick={() => dispatch(startTimer())}>Play</WhiteButton>
+              <WhiteButton icon="PlayCircleOutline" onClick={() => dispatch(startTimer())}>Play</WhiteButton>
             ) : (
-              <WhiteButton onClick={() => dispatch(stopTimer())}>Pause</WhiteButton>
+              <WhiteButton icon="PauseCircleOutline" onClick={() => dispatch(stopTimer())}>Pause</WhiteButton>
             )}
           </Box>        
         ):(<Typography variant="body2" sx={{color: '#787878'}}>Timer will start once the exercise is ready.</Typography>)}
