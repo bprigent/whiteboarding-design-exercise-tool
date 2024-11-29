@@ -95,7 +95,7 @@ const Timer = () => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        {exerciseStatus === 'success' ? (
+        {exerciseStatus === 'success' && (
           <Box>
             {timerStatus === 'paused' ? (
               <WhiteButton icon="PlayCircleOutline" onClick={() => dispatch(startTimer())}>Play</WhiteButton>
@@ -103,7 +103,13 @@ const Timer = () => {
               <WhiteButton icon="PauseCircleOutline" onClick={() => dispatch(stopTimer())}>Pause</WhiteButton>
             )}
           </Box>        
-        ):(<Typography variant="body2" sx={{color: '#787878'}}>Timer will start once the exercise is ready.</Typography>)}
+        )}
+        {(exerciseStatus === 'warming' || exerciseStatus === 'working') && (
+          <Typography variant="body2" sx={{color: '#787878'}}>Timer will start once the exercise is ready.</Typography>
+        )}
+        {(exerciseStatus === 'over') && (
+          <Typography variant="body2" sx={{color: '#787878'}}>Time's up!</Typography>
+        )}
       </Box>
     </Box>
   );

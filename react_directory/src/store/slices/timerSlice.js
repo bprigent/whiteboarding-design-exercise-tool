@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { setStatus } from './exerciseSlice'; 
 
 let timerInterval = null;
 
@@ -31,21 +32,32 @@ const timerSlice = createSlice({
 
 export const { setRemainingTime, playTimer, pauseTimer, decrementTime } = timerSlice.actions;
 
+
+
 export const startTimer = () => (dispatch, getState) => {
-  
     const { timer } = getState();
     if (timer.timerStatus === 'playing') return; // Prevent starting multiple timers
 
     dispatch(playTimer());
     timerInterval = setInterval(() => {
-        dispatch(decrementTime());
-    }, 1000);
+        const { remainingTime } = getState().timer;
 
+        if (remainingTime > 0) {
+            dispatch(decrementTime());
+        } else {
+            dispatch(pauseTimer());
+            dispatch(setStatus('over')); // Notify exercise that the timer is over
+            clearInterval(timerInterval);
+        }
+    }, 1000);
 };
 
+
+// Clear interval properly
 export const stopTimer = () => (dispatch) => {
     dispatch(pauseTimer());
-    clearInterval(timerInterval); // Clear interval properly
+    clearInterval(timerInterval); 
 };
+
 
 export default timerSlice.reducer;

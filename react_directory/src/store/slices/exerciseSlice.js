@@ -4,7 +4,7 @@ const exerciseSlice = createSlice({
   name: 'exercise', 
   initialState: {
     prompt: '', 
-    exerciseStatus: 'idle', // idle, warming, working, success, error
+    exerciseStatus: 'idle', // idle, warming, working, success, error, over
   },
   reducers: {
     setPrompt: (state, action) => {

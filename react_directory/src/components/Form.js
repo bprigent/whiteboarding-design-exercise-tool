@@ -100,6 +100,7 @@ const Form = () => {
                 <ButtonGroup
                     label="Timer"
                     options={[
+                        { value: 2, label: '2 min' },
                         { value: 30, label: '30 min' },
                         { value: 45, label: '45 min', defaultValue: true },
                         { value: 60, label: '60 min' },

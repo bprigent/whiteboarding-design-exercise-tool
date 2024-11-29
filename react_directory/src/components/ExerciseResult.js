@@ -65,14 +65,40 @@ const ExerciseResult = () => {
             )}
 
             {exerciseStatus === 'error' && (
-                <Box>
+                <Box sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
                     <Typography variant="body1" color="error">
                         There was an error generating your exercise. Please try again.
                     </Typography>
                 </Box>
             )}
 
-            <Box sx={{paddingY: 4}}>
+            {exerciseStatus === 'over' && (
+                <Box sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Typography variant="body1" color="#000000">
+                        Congratulations. Take a break and do another one!
+                    </Typography>
+                </Box>
+            )}
+
+            <Box sx={{
+                paddingY: 4,
+                minHeight:'104px',
+                display:'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
                 <OrangeButton onClick={handleCancel}>
                     I am done with this exercise
                 </OrangeButton>
