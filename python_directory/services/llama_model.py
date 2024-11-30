@@ -9,12 +9,9 @@ CACHE_DIR = "./.cache"  # Directory to store cached models and tokenizers
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-
 # Detect device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 logger.info(f"Using device: {device}")
-
-
 
 ############################################################
 # load model

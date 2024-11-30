@@ -44,7 +44,7 @@ const ExerciseResult = () => {
                         },
                         {
                         icon: <Timer sx={{ color: '#9e9e9e' }} />,
-                        text: `Your ${remainingTimeInMinutes} minute timer will start after.`,
+                        text: `Your ${remainingTimeInMinutes} minute timer will start soon.`,
                         },
                     ]}
                 />

@@ -4,7 +4,6 @@ import Image from '../components/Image';
 import Form from '../components/Form';
 
 const FormPage = () => {
-
     return (
         <TwoColPage
             leftContent={<Image/>}

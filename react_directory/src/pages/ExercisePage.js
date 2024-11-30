@@ -4,7 +4,6 @@ import ExerciseResult from '../components/ExerciseResult';
 import Timer from '../components/Timer';
 
 const ExercisePage = () => {
-
     return (
         <TwoColPage
             leftContent={<Timer/>}

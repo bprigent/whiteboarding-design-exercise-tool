@@ -32,7 +32,7 @@ const Form = () => {
             console.log(`experience is at: ${experience}`)
             console.log(`product is at: ${product}`)
             console.log(`maturity is at: ${maturity}`)
-            dispatch(setRemainingTime(parseInt(time) * 60)); // Set timer duration
+            dispatch(setRemainingTime(parseInt(time) * 60));
             navigate('/exercise');
             const serverResponse = await createExercise(dispatch, experience, product, maturity, time);
             dispatch(setPrompt(serverResponse)); 

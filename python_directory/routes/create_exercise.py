@@ -1,14 +1,8 @@
 from flask import Blueprint, request, jsonify, Response, stream_with_context
 from services.llama_model import generate_response_stream
 
-
-
-
 # Create a Blueprint for "create-exercise" route
 create_exercise_bp = Blueprint("create_exercise", __name__)
-
-
-
 
 # Pre-tokenized prompt cache (initialize during app startup)
 pre_tokenized_prompt = None
