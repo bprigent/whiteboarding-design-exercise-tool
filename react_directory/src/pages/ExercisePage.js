@@ -2,7 +2,7 @@ import React from 'react';
 import ThreeSectionPage from '../components/ThreeSectionPage';
 import ExerciseResult from '../components/ExerciseResult';
 import Timer from '../components/Timer';
-import Chat from '../components/Chat';
+import Chat from '../components/chat/Chat';
 
 const ExercisePage = () => {
     return (
