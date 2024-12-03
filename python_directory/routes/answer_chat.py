@@ -26,7 +26,7 @@ def chat():
     # logging system prompt
     logging.info(f"Received system prompt: {system_prompt}")
 
-    max_context_length = data.get("max_context_length", 2048)  # Optional max context length
+    max_context_length = data.get("max_context_length", 8192)  # Optional max context length
     max_response_length = data.get("max_response_length", 150)  # Optional max response length
 
     if not system_prompt:

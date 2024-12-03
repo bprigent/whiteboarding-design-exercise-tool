@@ -5,11 +5,14 @@ import { addMessage, updateMessageContent, updateMessageStatus } from "../store/
 const API_BASE_URL = "http://127.0.0.1:5000";
 
 
-const optimizeMessageHistory = (messageHistory) => {
+const optimizeMessageHistory = (messageHistory, userMessage) => {
     const cleanup = messageHistory
     .map(({ author, content }) => `${author}: ${content}`) // Format each message
     .join("\n"); // Use newline for better readability
-    return cleanup
+
+    const fullHistory = cleanup + "\nLatest user message: " + userMessage + "."
+
+    return fullHistory
 };
 
 // Build the system prompt with better structure and dynamic handling
@@ -24,18 +27,15 @@ const buildSystemPrompt = (optimizedHistory, exercise) => {
         ${formattedHistory}
 
         Instructions:
-        - You are a UX mentor guiding the user through a design exercise.
-        - Keep the entire answer below 50 words. Always.
-        - Guide, but do not give answers. Encourage self-discovery.
-        - Be concise, encouraging, and ask thought-provoking questions.
-        - Avoid repeating parts of the conversation history in your responses.
-        - Do not include phrases like "AI:", "my answer is:", or unnecessary formatting like **bold**, /n, or other Markdown characters.
+        - You are a UX interviewer overseeing and conversing with a user during their design whiteboarding exercise interview. The exercise given to the user: "${exercise}"
+        - Be concise, keep all answers below 25 words. Always.
+        - Guide, chat, but do not give answers.
+        - Use the context of the conversation history but never repeat parts of the conversation history in your responses.
+        - Do not include phrases like "AI:", "my answer is:", or unnecessary formatting like **bold**, /n, or other Markdown characters. Do not create paragraphs or jump lines.
         - Write your answers as if you are directly speaking to the user, without meta-commentary.
 
-        Design exercise: "${exercise}"
-
         Your task:
-        Respond thoughtfully to continue the discussion based on the user's latest message.
+        Respond thoughtfully to the user's latest message.
     `;
 };
 
@@ -44,11 +44,10 @@ export const sendMessageToAPI = async ({ dispatch, userMessage, messageHistory, 
     try {
 
         // Optimize the message history
-        console.log(messageHistory)
-        const optimizedHistory = optimizeMessageHistory(messageHistory);
+        const optimizedHistory = optimizeMessageHistory(messageHistory, userMessage);
 
         // Build the system prompt
-        const systemPrompt = buildSystemPrompt(optimizedHistory, exercise, userMessage);
+        const systemPrompt = buildSystemPrompt(optimizedHistory, exercise);
 
         // log the prompt
         console.log("Sending payload:", { systemPrompt });
