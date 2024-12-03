@@ -36,14 +36,14 @@ const Chat = () => {
 
         try {
             // Call the API utility function with dispatch
-            await sendMessageToAPI(dispatch, input, messageHistory, exercise);
+            await sendMessageToAPI({dispatch, userMessage: input, messageHistory: messageHistory, exercise: exercise});
 
         } catch (error) {
             // create an message answer with the error
             const newErrorMessageId = Date.now() + "-ai";
             const errorMessage = {id: newErrorMessageId, author: "ai", content: "Sorry, my server is not working properly.", status: "Error"}
             dispatch(addMessage(errorMessage));
-            // reopen conversation
+            // re-open the conversation
             dispatch(setConversationStatus('opened'))
         } finally {
             // re-open the conversation

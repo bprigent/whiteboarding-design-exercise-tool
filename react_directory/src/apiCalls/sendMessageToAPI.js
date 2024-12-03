@@ -6,15 +6,17 @@ const API_BASE_URL = "http://127.0.0.1:5000";
 
 
 const optimizeMessageHistory = (messageHistory) => {
-    return messageHistory
-        .map(({ author, content }) => `${author}: ${content}`) // Format each message
-        .join("\n"); // Use newline for better readability
+    const cleanup = messageHistory
+    .map(({ author, content }) => `${author}: ${content}`) // Format each message
+    .join("\n"); // Use newline for better readability
+    return cleanup
 };
 
 // Build the system prompt with better structure and dynamic handling
-const buildSystemPrompt = (messageHistory, exercise) => {
-    const formattedHistory = messageHistory.length > 0 
-        ? optimizeMessageHistory(messageHistory) 
+const buildSystemPrompt = (optimizedHistory, exercise) => {
+    
+    const formattedHistory = optimizedHistory.length > 0 
+        ? optimizedHistory
         : "No prior messages.";
 
     return `
@@ -26,6 +28,9 @@ const buildSystemPrompt = (messageHistory, exercise) => {
         - Keep the entire answer below 50 words. Always.
         - Guide, but do not give answers. Encourage self-discovery.
         - Be concise, encouraging, and ask thought-provoking questions.
+        - Avoid repeating parts of the conversation history in your responses.
+        - Do not include phrases like "AI:", "my answer is:", or unnecessary formatting like **bold**, /n, or other Markdown characters.
+        - Write your answers as if you are directly speaking to the user, without meta-commentary.
 
         Design exercise: "${exercise}"
 
@@ -34,10 +39,12 @@ const buildSystemPrompt = (messageHistory, exercise) => {
     `;
 };
 
-export const sendMessageToAPI = async (dispatch, userMessage, messageHistory, exercise) => {
+export const sendMessageToAPI = async ({ dispatch, userMessage, messageHistory, exercise }) => {
+    
     try {
 
         // Optimize the message history
+        console.log(messageHistory)
         const optimizedHistory = optimizeMessageHistory(messageHistory);
 
         // Build the system prompt
@@ -65,7 +72,7 @@ export const sendMessageToAPI = async (dispatch, userMessage, messageHistory, ex
         
         // Dispatch a placeholder AI message
         const newMessageId = Date.now() + "-ai"; // Generate a unique ID for this AI message
-        const newEmptyMessageFromAI = {id: newMessageId, author: "ai", content: "", status: "Responding",}
+        const newEmptyMessageFromAI = {id: newMessageId, author: "ai", content: "", status: "Responding"}
         dispatch(addMessage(newEmptyMessageFromAI));
 
         // Process the response stream
