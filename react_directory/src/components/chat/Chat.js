@@ -4,18 +4,18 @@ import { Box } from '@mui/material';
 import AIMessage from './AIMessage';
 import HumanMessage from './HumanMessage';
 import Input from './Input';
-import { addMessage, updateMessageContent, updateMessageStatus, setConversationStatus } from '../../store/slices/chatSlice';
+import { addMessage, updateMessageStatus, setConversationStatus } from '../../store/slices/chatSlice';
 import { sendMessageToAPI } from '../../apiCalls/sendMessageToAPI';
 
 
 /* 
 The goal of this component is to manage the conversations.
-
 */
 
 const Chat = () => {
     const dispatch = useDispatch();
-    const messages = useSelector((state) => state.chat.messages);
+    const messageHistory = useSelector((state) => state.chat.messages);
+    const exercise = useSelector((state) => state.exercise.prompt)
     const conversationStatus = useSelector((state) => state.chat.conversationStatus);
 
     const [input, setInput] = useState('');
@@ -27,18 +27,16 @@ const Chat = () => {
         // Send message to slice
         dispatch(addMessage(newMessage));
 
-        // clear content of the input box.
+        // clear content of the input box, disable the input
         setInput("");
-
-        // set the conversation status to locked so that people cant send new message
         dispatch(setConversationStatus('locked'))
 
-        // update message status to send
+        // update message status to 'sent'
         dispatch(updateMessageStatus({messageId:newMessageId, newStatus:'Sent'}))
 
         try {
             // Call the API utility function with dispatch
-            await sendMessageToAPI(dispatch, input, messages);
+            await sendMessageToAPI(dispatch, input, messageHistory, exercise);
 
         } catch (error) {
             // create an message answer with the error
@@ -71,13 +69,11 @@ const Chat = () => {
                     overflowY: 'auto', // Enables scrolling when overflowing
                 }}
             >
-                {/* Add a spacer to push content down */}
-                <Box sx={{ marginTop: 'auto' }} />
-                {messages.map((message, index) =>
-                    message.role === 'user' ? (
-                        <HumanMessage key={index} text={message.text} status={message.status} />
+                {messageHistory.map((message, index) =>
+                    message.author === 'user' ? (
+                        <HumanMessage key={index} text={message.content} status={message.status} />
                     ) : (
-                        <AIMessage key={index} text={message.text} status={message.status} />
+                        <AIMessage key={index} text={message.content} status={message.status} />
                     )
                 )}
                 

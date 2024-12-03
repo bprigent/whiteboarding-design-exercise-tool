@@ -8,7 +8,7 @@ It store the status of the converssation status so that we can prevent people fr
 
 const initialState = {
     messages: [], // Chat history [{id: '...', author: '...', content: '...', status: '...'}]
-    conversationStatus: 'locked', // 'locked', 'opened', 'error'...
+    conversationStatus: 'locked', // 'locked', 'opened'
 };
 
 const chatSlice = createSlice({
@@ -22,8 +22,10 @@ const chatSlice = createSlice({
             const { messageId, token } = action.payload;
             const message = state.messages.find((msg) => msg.id === messageId);
             if (message) {
-                // Append the token to the message text
+                console.log(`Updating message: ${messageId} with token: ${token}`); // Debug log
                 message.content += token; 
+            } else {
+                console.warn(`Message with ID ${messageId} not found for token: ${token}`);
             }
         },
         updateMessageStatus(state, action) {
