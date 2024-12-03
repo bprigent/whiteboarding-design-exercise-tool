@@ -4,14 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPrompt, setStatus } from "../store/slices/exerciseSlice";
 import { useNavigate } from 'react-router-dom';
 import LoadingScreen from './LoadingPrompt';
-import { Description, Timer } from '@mui/icons-material';
 import { OrangeButton } from './Buttons';
 
 
 const ExerciseResult = () => {
     const { prompt, exerciseStatus } = useSelector((state) => state.exercise);
-    const { remainingTime } = useSelector((state) => state.timer);
-    const remainingTimeInMinutes = remainingTime / 60; 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,16 +34,7 @@ const ExerciseResult = () => {
             {exerciseStatus === 'warming' && (
                 <LoadingScreen
                     heading="Generating your prompt..."
-                    tips={[
-                        {
-                        icon: <Description sx={{ color: '#9e9e9e' }} />, // Icon styling
-                        text: "Don't forget to get your template ready.",
-                        },
-                        {
-                        icon: <Timer sx={{ color: '#9e9e9e' }} />,
-                        text: `Your ${remainingTimeInMinutes} minute timer will start soon.`,
-                        },
-                    ]}
+                    sub="Don't forget to get your template ready."
                 />
             )}
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import AIMessage from './AIMessage';
 import HumanMessage from './HumanMessage';
 import Input from './Input';
-import { addMessage, setHumanStatus, setAIStatus } from '../../store/slices/chatSlice';
+import { addMessage, setHumanStatus } from '../../store/slices/chatSlice';
+import { sendMessage } from '../../apiCalls/sendMessage';
 
 
 const Chat = () => {
@@ -18,26 +19,25 @@ const Chat = () => {
         if (!input.trim() || inputDisabled) return;
 
         // Dispatch user message
-        dispatch(addMessage({role: 'user', text: input, status: 'Sent'}));
-        setInput('');
+        dispatch(
+            addMessage({ id: Date.now(), role: "user", text: input, status: "Sent" })
+        );
+        setInput("");
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: input, context: messages }),
-            });
-
-            if (!response.ok) throw new Error('Failed to fetch AI response');
-
-            const aiResponse = await response.text();
-
-            // Dispatch AI response
-            dispatch(addMessage({ role: 'ai', text: aiResponse, status: 'Sent' }));
+            // Call the API utility function with dispatch
+            await sendMessage(dispatch, input, messages);
         } catch (error) {
-            dispatch(addMessage({ role: 'ai', text: 'Error fetching response.', status: 'Sent' }));
+            dispatch(
+                addMessage({
+                    id: Date.now(),
+                    role: "ai",
+                    text: "Error fetching response.",
+                    status: "Error",
+                })
+            );
         } finally {
-            dispatch(setHumanStatus('idle'));
+            dispatch(setHumanStatus("idle"));
         }
     };
 
@@ -54,10 +54,13 @@ const Chat = () => {
                 sx={{
                     flexGrow: 1,
                     display: 'flex',
-                    flexDirection: 'column', // Stacks messages from the bottom
-                    overflowY: 'auto',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end', // Aligns messages at the bottom
+                    overflowY: 'auto', // Enables scrolling when overflowing
                 }}
             >
+                {/* Add a spacer to push content down */}
+                <Box sx={{ marginTop: 'auto' }} />
                 {messages.map((message, index) =>
                     message.role === 'user' ? (
                         <HumanMessage key={index} text={message.text} status={message.status} />

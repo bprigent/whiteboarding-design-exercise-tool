@@ -1,8 +1,8 @@
 import React from 'react';
-import { CircularProgress, Box, Typography, Paper } from '@mui/material';
+import { CircularProgress, Box, Typography } from '@mui/material';
 
 
-const LoadingScreen = ({ heading, tips }) => {
+const LoadingScreen = ({ heading, sub }) => {
   
   
   return (
@@ -14,7 +14,7 @@ const LoadingScreen = ({ heading, tips }) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 4, // Space between elements
-        padding: 2,
+        padding: 1,
       }}
     >
     {/* Loading Animation */}
@@ -37,25 +37,8 @@ const LoadingScreen = ({ heading, tips }) => {
         {heading}
       </Typography>
 
-      {/* Tips Section */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {tips.map((tip, index) => (
-          <Paper
-            key={index}
-            elevation={0}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              padding: 1.5,
-              backgroundColor: '#f5f5f5',
-              borderRadius: 2,
-            }}
-          >
-            {tip.icon}
-            <Typography variant="body2">{tip.text}</Typography>
-          </Paper>
-        ))}
+        <Typography variant="body2">{sub}</Typography>  
       </Box>
     </Box>
   );

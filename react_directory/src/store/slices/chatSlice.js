@@ -14,6 +14,13 @@ const chatSlice = createSlice({
         addMessage(state, action) {
             state.messages.push(action.payload); // Add a new message
         },
+        updateMessage(state, action) {
+            const { messageId, token } = action.payload;
+            const message = state.messages.find((msg) => msg.id === messageId);
+            if (message) {
+                message.text += token; // Append the token to the message text
+            }
+        },
         setHumanStatus(state, action) {
             state.humanStatus = action.payload; // Update human status
         },
@@ -31,6 +38,7 @@ const chatSlice = createSlice({
 
 export const {
     addMessage,
+    updateMessage,
     setHumanStatus,
     setAIStatus,
     setError,
