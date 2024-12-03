@@ -1,8 +1,8 @@
-import { addMessage, updateMessage } from "../store/slices/chatSlice";
+import { addMessage, updateMessageContent } from "../store/slices/chatSlice";
 
 const API_BASE_URL = "http://127.0.0.1:5000";
 
-export const sendMessage = async (dispatch, userMessage, context) => {
+export const sendMessageToAPI = async (dispatch, userMessage, context) => {
     try {
         const response = await fetch(`${API_BASE_URL}/chat`, {
             method: "POST",
@@ -39,7 +39,7 @@ export const sendMessage = async (dispatch, userMessage, context) => {
             result += token;
 
             // Dispatch incremental token updates
-            dispatch(updateMessage({ messageId, token }));
+            dispatch(updateMessageContent({ messageId, token }));
         }
 
         return result.trim();

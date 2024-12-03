@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box, TextField, Button } from '@mui/material';
 
-const ChatInput = ({ value, onChange, onSend, disabled }) => {
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !disabled) {
-            onSend(); // Send message on Enter key press
-        }
-    };
+const ChatInput = ({ value, onChange, onSend, conversationStatus }) => {
+    
+    let disabled = false; // Define 'disabled' variable with a default value
+
+    if (conversationStatus === 'locked') {
+        disabled = true;
+    }
 
     return (
         <Box
@@ -20,7 +21,6 @@ const ChatInput = ({ value, onChange, onSend, disabled }) => {
                 variant="outlined"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                onKeyPress={handleKeyPress}
                 placeholder="Ask questions about the prompt"
                 disabled={disabled}
             />

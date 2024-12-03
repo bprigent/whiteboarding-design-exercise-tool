@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+/*
+This slice is here to gather the content of the conversation.
+It stores the history of messages. Each message has an id, author, content, status.
+It store the status of the converssation status so that we can prevent people from 
+*/ 
+
 const initialState = {
-    messages: [], // Chat history
-    humanStatus: 'idle', // 'idle', 'typing', 'sending', 'error'
-    aiStatus: 'idle', // 'idle', 'responding', 'error'
-    error: null, // Error messages
+    messages: [], // Chat history [{id: '...', author: '...', content: '...', status: '...'}]
+    conversationStatus: 'locked', // 'locked', 'opened', 'error'...
 };
 
 const chatSlice = createSlice({
@@ -14,35 +18,33 @@ const chatSlice = createSlice({
         addMessage(state, action) {
             state.messages.push(action.payload); // Add a new message
         },
-        updateMessage(state, action) {
+        updateMessageContent(state, action) {
             const { messageId, token } = action.payload;
             const message = state.messages.find((msg) => msg.id === messageId);
             if (message) {
-                message.text += token; // Append the token to the message text
+                // Append the token to the message text
+                message.content += token; 
             }
         },
-        setHumanStatus(state, action) {
-            state.humanStatus = action.payload; // Update human status
+        updateMessageStatus(state, action) {
+            const { messageId, newStatus } = action.payload;
+            const message = state.messages.find((msg) => msg.id === messageId);
+            if (message) {
+                // Append the token to the message text
+                message.status = newStatus; 
+            }
         },
-        setAIStatus(state, action) {
-            state.aiStatus = action.payload; // Update AI status
-        },
-        setError(state, action) {
-            state.error = action.payload; // Set error message
-        },
-        clearError(state) {
-            state.error = null; // Clear error messages
+        setConversationStatus(state, action) {
+            state.conversationStatus = action.payload; // Update conversation status
         },
     },
 });
 
 export const {
     addMessage,
-    updateMessage,
-    setHumanStatus,
-    setAIStatus,
-    setError,
-    clearError,
+    updateMessageContent,
+    updateMessageStatus,
+    setConversationStatus,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

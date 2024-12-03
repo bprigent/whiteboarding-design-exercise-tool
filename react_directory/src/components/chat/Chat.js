@@ -4,40 +4,52 @@ import { Box } from '@mui/material';
 import AIMessage from './AIMessage';
 import HumanMessage from './HumanMessage';
 import Input from './Input';
-import { addMessage, setHumanStatus } from '../../store/slices/chatSlice';
-import { sendMessage } from '../../apiCalls/sendMessage';
+import { addMessage, updateMessageContent, updateMessageStatus, setConversationStatus } from '../../store/slices/chatSlice';
+import { sendMessageToAPI } from '../../apiCalls/sendMessageToAPI';
 
+
+/* 
+The goal of this component is to manage the conversations.
+
+*/
 
 const Chat = () => {
     const dispatch = useDispatch();
     const messages = useSelector((state) => state.chat.messages);
-    const inputDisabled = useSelector((state) => state.chat.inputDisabled);
+    const conversationStatus = useSelector((state) => state.chat.conversationStatus);
 
     const [input, setInput] = useState('');
 
     const handleSendMessage = async () => {
-        if (!input.trim() || inputDisabled) return;
+        // create new message object
+        const newMessageId = Date.now() + "-user";
+        const newMessage = { id: newMessageId, author: "user", content: input, status: "Sending"}
+        // Send message to slice
+        dispatch(addMessage(newMessage));
 
-        // Dispatch user message
-        dispatch(
-            addMessage({ id: Date.now(), role: "user", text: input, status: "Sent" })
-        );
+        // clear content of the input box.
         setInput("");
+
+        // set the conversation status to locked so that people cant send new message
+        dispatch(setConversationStatus('locked'))
+
+        // update message status to send
+        dispatch(updateMessageStatus({messageId:newMessageId, newStatus:'Sent'}))
 
         try {
             // Call the API utility function with dispatch
-            await sendMessage(dispatch, input, messages);
+            await sendMessageToAPI(dispatch, input, messages);
+
         } catch (error) {
-            dispatch(
-                addMessage({
-                    id: Date.now(),
-                    role: "ai",
-                    text: "Error fetching response.",
-                    status: "Error",
-                })
-            );
+            // create an message answer with the error
+            const newErrorMessageId = Date.now() + "-ai";
+            const errorMessage = {id: newErrorMessageId, author: "ai", content: "Sorry, my server is not working properly.", status: "Error"}
+            dispatch(addMessage(errorMessage));
+            // reopen conversation
+            dispatch(setConversationStatus('opened'))
         } finally {
-            dispatch(setHumanStatus("idle"));
+            // re-open the conversation
+            dispatch(setConversationStatus('opened'))
         }
     };
 
@@ -74,7 +86,7 @@ const Chat = () => {
                 value={input}
                 onChange={setInput}
                 onSend={handleSendMessage}
-                disabled={inputDisabled}
+                conversationStatus={conversationStatus}
             />
         </Box>
     );

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box } from "@mui/material";
 import { useDispatch } from 'react-redux';
 import { setPrompt, setStatus } from '../store/slices/exerciseSlice';
+import { setConversationStatus } from '../store/slices/chatSlice';
 import { setRemainingTime } from '../store/slices/timerSlice';
 import { createExercise } from "../apiCalls/createExercise";
 import TextPairing from './TextPairing';
@@ -37,6 +38,7 @@ const Form = () => {
             const serverResponse = await createExercise(dispatch, experience, product, maturity, time);
             dispatch(setPrompt(serverResponse)); 
             dispatch(setStatus('success'));
+            dispatch(setConversationStatus('opened'));
         } catch (error) {
             console.error("Error generating response:", error);
             dispatch(setPrompt('Error generating response.'));
