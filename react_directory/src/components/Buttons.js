@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon } from '@mui/material';
+import { Button } from '@mui/material';
 import * as Icons from '@mui/icons-material'; // Import all icons for dynamic rendering
 import PropTypes from 'prop-types';
 
@@ -51,8 +51,12 @@ export const OrangeButton = ({ children, onClick, ...props }) => (
 );
 
 
-export const WhiteButton = ({ children, icon, onClick, ...props }) => {
-  
+export const WhiteButton = ({
+  children,
+  icon = null, // Default parameter
+  onClick = undefined, // Default parameter
+  ...props
+}) => {
   const IconComponent = Icons[icon] || null; // Get the icon dynamically or default to null
 
   return (
@@ -90,12 +94,6 @@ WhiteButton.propTypes = {
   onClick: PropTypes.func, // Function to handle the onClick event
 };
 
-// Default Props
-WhiteButton.defaultProps = {
-  icon: null,
-  onClick: undefined,
-};
-
 
 
 export const IconButton = ({onClick, disabled, icon} ) => {
@@ -110,7 +108,11 @@ export const IconButton = ({onClick, disabled, icon} ) => {
   return (
     <Button
       variant="outlined"
-      onClick={onClick}
+      onClick={(e) => {
+        if (!disabled) {
+          onClick(e); // Only call onClick if the button is not disabled
+        }
+      }}
       disabled={disabled}
       sx={{
         minWidth: '56px', // Ensures the button is circular

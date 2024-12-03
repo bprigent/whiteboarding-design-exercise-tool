@@ -23,14 +23,16 @@ const ChatInput = ({ value, onChange, onSend, conversationStatus }) => {
                 onChange={(e) => onChange(e.target.value)}
                 placeholder="Ask questions about the prompt"
                 disabled={disabled}
+                autoComplete="off"
                 sx={{
                     '& .MuiOutlinedInput-root': {
                         padding: 0,
                         backgroundColor: '#ffffff',
                         border: '1px solid #E5E5E5',
                         borderRadius: '20px',
+                        transition: 'box-shadow 0.2s ease',
                         '&:hover': {
-                            outline: '2px solid #1976d2',
+                            outline: disabled ? 'none' : '2px solid #1976d2',
                         },
                         '&.Mui-focused': {
                             outline: '2px solid #1976d2',

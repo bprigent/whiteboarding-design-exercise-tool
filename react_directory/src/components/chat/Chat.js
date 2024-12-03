@@ -21,6 +21,12 @@ const Chat = () => {
     const [input, setInput] = useState('');
 
     const handleSendMessage = async () => {
+        // Check if input is empty
+        if (!input.trim()) {
+            console.warn("Input is empty. Message not sent.");
+            return; // Exit the function early
+        }
+
         // create new message object
         const newMessageId = Date.now() + "-user";
         const newMessage = { id: newMessageId, author: "user", content: input, status: "Sending"}
