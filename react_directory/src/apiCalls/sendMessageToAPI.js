@@ -8,19 +8,30 @@ const API_BASE_URL = "http://127.0.0.1:5000";
 const optimizeMessageHistory = (messageHistory) => {
     return messageHistory
         .map(({ author, content }) => `${author}: ${content}`) // Format each message
-        .join(" -- "); // Concatenate with " -- "
+        .join("\n"); // Use newline for better readability
 };
 
-const buildSystemPrompt = (history, exercise, userLatestMessage) => {
+// Build the system prompt with better structure and dynamic handling
+const buildSystemPrompt = (messageHistory, exercise) => {
+    const formattedHistory = messageHistory.length > 0 
+        ? optimizeMessageHistory(messageHistory) 
+        : "No prior messages.";
+
     return `
-        Message history: "${history}".
-        User's latest message: "${userLatestMessage}
-        This was the history of you and your user conversing about their UX exercise.
-        It is possible the message history was empty.
-        Your goal is to be a teacher and keep the conversation going by giving advice about this prompt: "${exercise}"
-        Keep your answers very short, don't give too many tips. Guide, but do not answer. They need to think by themselves.
-        User's latest message: "${userLatestMessage}. Answer it simply.
-    `
+        Conversation history:
+        ${formattedHistory}
+
+        Instructions:
+        - You are a UX mentor guiding the user through a design exercise.
+        - Keep the entire answer below 50 words. Always.
+        - Guide, but do not give answers. Encourage self-discovery.
+        - Be concise, encouraging, and ask thought-provoking questions.
+
+        Design exercise: "${exercise}"
+
+        Your task:
+        Respond thoughtfully to continue the discussion based on the user's latest message.
+    `;
 };
 
 export const sendMessageToAPI = async (dispatch, userMessage, messageHistory, exercise) => {
