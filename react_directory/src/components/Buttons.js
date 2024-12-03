@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Icon } from '@mui/material';
 import * as Icons from '@mui/icons-material'; // Import all icons for dynamic rendering
 import PropTypes from 'prop-types';
 
@@ -96,4 +96,41 @@ WhiteButton.defaultProps = {
   onClick: undefined,
 };
 
-export default WhiteButton;
+
+
+export const IconButton = ({onClick, disabled, icon} ) => {
+
+  const IconComponent = Icons[icon] || null;
+
+  if (!IconComponent) {
+    console.error(`Icon "${icon}" not found in Material UI icons.`);
+    return null; // Don't render the button if the icon is invalid
+  }
+
+  return (
+    <Button
+      variant="outlined"
+      onClick={onClick}
+      disabled={disabled}
+      sx={{
+        minWidth: '56px', // Ensures the button is circular
+        minHeight: '56px', // Same height and width for a perfect circle
+        width: '56px',
+        height: '56px',
+        borderRadius: '40px',
+        border: '1px solid #e5e5e5', // Grey border
+        color: '#000000', // Grey icon color
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '&:hover': {
+          borderColor: '#1976d2', 
+          color: '#ffffff', 
+          backgroundColor: '#1976d2', 
+        },
+      }}
+    >
+      <IconComponent/>
+    </Button>
+  );
+};

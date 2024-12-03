@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, TextField, Button } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import { IconButton } from '../Buttons';
 
 const ChatInput = ({ value, onChange, onSend, conversationStatus }) => {
     
@@ -13,25 +14,35 @@ const ChatInput = ({ value, onChange, onSend, conversationStatus }) => {
         <Box
             sx={{
                 display: 'flex',
-                marginTop: '16px',
+                gap: 1,
+                marginTop: '20px',
             }}
         >
             <TextField
-                fullWidth
-                variant="outlined"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder="Ask questions about the prompt"
                 disabled={disabled}
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        padding: 0,
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #E5E5E5',
+                        borderRadius: '20px',
+                        '&:hover': {
+                            outline: '2px solid #1976d2',
+                        },
+                        '&.Mui-focused': {
+                            outline: '2px solid #1976d2',
+                        },
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        border: 'none', // Removes the default outline
+                    },
+                    flexGrow: 1,
+                }}
             />
-            <Button
-                variant="contained"
-                onClick={onSend}
-                disabled={disabled}
-                sx={{ marginLeft: '8px' }}
-            >
-                Send
-            </Button>
+            <IconButton onClick={onSend} disabled={disabled} icon='Send'/>
         </Box>
     );
 };
