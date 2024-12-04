@@ -96,6 +96,8 @@ WhiteButton.propTypes = {
 
 
 
+
+
 export const IconButton = ({onClick, disabled, icon} ) => {
 
   const IconComponent = Icons[icon] || null;
@@ -129,6 +131,44 @@ export const IconButton = ({onClick, disabled, icon} ) => {
           borderColor: '#1976d2', 
           color: '#ffffff', 
           backgroundColor: '#1976d2', 
+        },
+      }}
+    >
+      <IconComponent/>
+    </Button>
+  );
+};
+
+
+
+
+
+
+export const IconButtonWhite = ({onClick, icon} ) => {
+
+  const IconComponent = Icons[icon] || null;
+
+  if (!IconComponent) {
+    console.error(`Icon "${icon}" not found in Material UI icons.`);
+    return null; // Don't render the button if the icon is invalid
+  }
+
+  return (
+    <Button
+      onClick={onClick}
+      sx={{
+        minWidth: '32px', 
+        minHeight: '32px',
+        width: '32px',
+        height: '32px',
+        borderRadius: '40px',
+        color: '#000000', 
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '&:hover': {
+          color: '#F28118', 
+          backgroundColor: '#f9f9f9',
         },
       }}
     >

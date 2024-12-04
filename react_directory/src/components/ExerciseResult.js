@@ -1,22 +1,19 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { useSelector, useDispatch } from "react-redux";
-import { setPrompt, setStatus } from "../store/slices/exerciseSlice";
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import LoadingScreen from './LoadingPrompt';
-import { OrangeButton } from './Buttons';
+import * as Icons from '@mui/icons-material'; // Import all icons for dynamic rendering
+
 
 
 const ExerciseResult = () => {
     const { prompt, exerciseStatus } = useSelector((state) => state.exercise);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    
+    const iconNameCheck = 'DoneAll';
+    const IconComponentCheck = Icons[iconNameCheck] || Icons.HelpOutline;
 
-    const handleCancel = () => {
-        dispatch(setPrompt(''));
-        dispatch(setStatus('idle'));
-        navigate('/create-new');
-    };
+    const iconNameTimer = 'HourglassTop';
+    const IconComponentTimer = Icons[iconNameTimer] || Icons.HelpOutline;
 
     return (
         <Box sx={{
@@ -27,14 +24,10 @@ const ExerciseResult = () => {
             alignItems: 'center', // Centers children horizontally
             justifyContent: 'center',
         }}>
-            <Box sx={{
-                height:'104px'
-            }}/>
-
             {exerciseStatus === 'warming' && (
                 <LoadingScreen
-                    heading="Generating your prompt..."
-                    sub="Don't forget to get your template ready."
+                    heading="Warming up the AI..."
+                    sub="It should only take a few seconds."
                 />
             )}
 
@@ -45,7 +38,34 @@ const ExerciseResult = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    gap: '8px',
                 }}>
+                    
+                    {exerciseStatus === 'working' && (
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '4px',
+                        }}>
+                            <Typography variant="body2" color="#787878">Generating...</Typography>
+                            <IconComponentTimer sx={{fontSize: 12, color: '#787878'}}/>
+                        </Box>
+                    )}
+                    {exerciseStatus === 'success' && (
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '4px',
+                        }}>
+                            <Typography variant="body2" color="#787878">Generated</Typography>
+                            <IconComponentCheck sx={{fontSize: 12, color: '#787878'}}/>
+                        </Box>
+                    )}
+                    
                     <Typography variant="body1" sx={{ fontFamily:'Gambarino', fontSize:'40px', textAlign:'center'}}>
                         "{prompt}"
                     </Typography>
@@ -79,18 +99,6 @@ const ExerciseResult = () => {
                     </Typography>
                 </Box>
             )}
-
-            <Box sx={{
-                paddingY: 4,
-                minHeight:'104px',
-                display:'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <OrangeButton onClick={handleCancel}>
-                    I am done with this exercise
-                </OrangeButton>
-            </Box>
         </Box>
     );
 };

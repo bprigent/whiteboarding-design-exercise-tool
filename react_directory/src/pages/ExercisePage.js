@@ -1,14 +1,14 @@
 import React from 'react';
-import ThreeSectionPage from '../components/ThreeSectionPage';
+import TwoColAndHeaderPage from '../components/TwoColAndHeaderPage';
 import ExerciseResult from '../components/ExerciseResult';
-import Timer from '../components/Timer';
 import Chat from '../components/chat/Chat';
+import Header from '../components/Header';
 
 const ExercisePage = () => {
     return (
-        <ThreeSectionPage
-            leftContentTop={<Timer/>}
-            leftContentBottom={<ExerciseResult/>}
+        <TwoColAndHeaderPage
+            headerContent={<Header/>}
+            leftContent={<ExerciseResult/>}
             rightContent={<Chat/>}
         />
     );
