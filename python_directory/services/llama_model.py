@@ -1,6 +1,6 @@
 import os
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, StoppingCriteriaList, StoppingCriteria
+from transformers import AutoTokenizer, AutoModelForCausalLM, StoppingCriteria
 import logging
 
 CACHE_DIR = "./.cache"  # Directory to store cached models and tokenizers
@@ -71,7 +71,7 @@ class TokenStoppingCriteria(StoppingCriteria):
 
 ############################################################
 # Generate a response based on the given prompt or pre-tokenized input.
-def generate_response_stream(prompt, tokenizer, model, max_length, pre_tokenized_input=None):
+def generate_response_stream(prompt, tokenizer, model, max_length, temp, pre_tokenized_input=None):
     """
     Stream token-by-token responses for a given prompt.
     """
@@ -105,6 +105,7 @@ def generate_response_stream(prompt, tokenizer, model, max_length, pre_tokenized
                 output_scores=True,
                 eos_token_id=tokenizer.eos_token_id,
                 use_cache=True,  # Enable KV caching, to go faster
+                temperature=temp, # temperature of the model
             )
 
             # Extract the new token

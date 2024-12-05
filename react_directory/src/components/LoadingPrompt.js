@@ -13,19 +13,18 @@ const LoadingScreen = ({ heading, sub }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 4, // Space between elements
+        gap: '6px',
         padding: 1,
       }}
     >
-    {/* Loading Animation */}
-    <CircularProgress 
-        size={40}
-        thickness={2}
-        sx={{
-            color: '#000000'
-        }}
-    />
-
+      {/* Loading Animation */}
+      <CircularProgress 
+          size={40}
+          thickness={2}
+          sx={{
+              color: '#000000'
+          }}
+      />
       {/* Heading */}
       <Typography
         variant="h5"
@@ -36,10 +35,8 @@ const LoadingScreen = ({ heading, sub }) => {
       >
         {heading}
       </Typography>
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Typography variant="body2">{sub}</Typography>  
-      </Box>
+      {/* Sub */}
+      <Typography variant="body2">{sub}</Typography>
     </Box>
   );
 };

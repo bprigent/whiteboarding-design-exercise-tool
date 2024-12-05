@@ -1,10 +1,10 @@
 import { addMessage, updateMessageContent, updateMessageStatus } from "../store/slices/chatSlice";
-
+import modelList from '../store/modelList';
 
 // API url
 const API_BASE_URL = "http://127.0.0.1:5000";
 
-
+// message history cleanup
 const optimizeMessageHistory = (messageHistory, userMessage) => {
     const cleanup = messageHistory
     .map(({ author, content }) => `${author}: ${content}`) // Format each message
@@ -15,48 +15,32 @@ const optimizeMessageHistory = (messageHistory, userMessage) => {
     return fullHistory
 };
 
-// Build the system prompt with better structure and dynamic handling
-const buildSystemPrompt = (optimizedHistory, exercise) => {
-    
-    const formattedHistory = optimizedHistory.length > 0 
-        ? optimizedHistory
-        : "No prior messages.";
 
-    return `
-        Conversation history:
-        ${formattedHistory}
 
-        Instructions:
-        - You are a UX interviewer overseeing and conversing with a user during their design whiteboarding exercise interview. The exercise given to the user: "${exercise}"
-        - Be concise, keep all answers below 25 words. Always.
-        - Guide, chat, but do not give answers.
-        - Use the context of the conversation history but never repeat parts of the conversation history in your responses.
-        - Do not include phrases like "AI:", "my answer is:", or unnecessary formatting like **bold**, /n, or other Markdown characters. Do not create paragraphs or jump lines.
-        - Write your answers as if you are directly speaking to the user, without meta-commentary.
 
-        Your task:
-        Respond thoughtfully to the user's latest message.
-    `;
-};
 
+
+
+// Main function
 export const sendMessageToAPI = async ({ dispatch, userMessage, messageHistory, exercise }) => {
-    
+
+        
     try {
 
         // Optimize the message history
         const optimizedHistory = optimizeMessageHistory(messageHistory, userMessage);
 
-        // Build the system prompt
-        const systemPrompt = buildSystemPrompt(optimizedHistory, exercise);
-
-        // log the prompt
-        console.log("Sending payload:", { systemPrompt });
+        // get the model
+        const modelSelected = modelList.find((model) => model.name === "Dieter 1.0");
+        const temp = modelSelected.message.temperature
+        const maxTokenLength = modelSelected.message.maxTokenLength
+        const systemPrompt = modelSelected.message.prompt({optimizedHistory, exercise})
 
         // send API request
         const response = await fetch(`${API_BASE_URL}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ systemPrompt: systemPrompt}),
+            body: JSON.stringify({ systemPrompt: systemPrompt, temp: temp, maxTokenLength: maxTokenLength}),
         });
 
         // if there is an issue, send error

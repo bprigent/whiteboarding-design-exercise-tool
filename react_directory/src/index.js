@@ -18,6 +18,27 @@ const theme = createTheme({
       main: '#dc004e', // Default pink
     },
   },
+  typography: {
+    fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    h1: {
+      fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    },
+    h2: {
+      fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    },
+    h3: {
+      fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    },
+    h4: {
+      fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    },
+    h5: {
+      fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    },
+    body1: {
+      fontFamily: `'Helvetica', 'Arial', sans-serif`, 
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

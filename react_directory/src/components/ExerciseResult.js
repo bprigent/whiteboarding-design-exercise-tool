@@ -61,6 +61,7 @@ const ExerciseResult = () => {
                             justifyContent: 'center',
                             gap: '4px',
                         }}>
+                            
                             <Typography variant="body2" color="#787878">Generated</Typography>
                             <IconComponentCheck sx={{fontSize: 12, color: '#787878'}}/>
                         </Box>

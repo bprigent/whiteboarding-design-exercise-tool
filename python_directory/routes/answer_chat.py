@@ -22,12 +22,13 @@ def chat():
     # Extract JSON data from the incoming request
     data = request.json
     system_prompt = data.get("systemPrompt", "")  # Extract the system prompt from the request
+    temp = data.get("temp", "") 
+    max_token_length = data.get("maxTokenLength", "")  
     
     # logging system prompt
     logging.info(f"Received system prompt: {system_prompt}")
 
-    max_context_length = data.get("max_context_length", 8192)  # Optional max context length
-    max_response_length = data.get("max_response_length", 150)  # Optional max response length
+    max_context_length = 8192  # Optional max context length
 
     if not system_prompt:
         return jsonify({"error": "No message provided"}), 400
@@ -44,7 +45,7 @@ def chat():
     # Streaming function to generate the response
     def stream():
         response_tokens = []
-        for token in generate_response_stream(None, tokenizer, model, max_length=max_response_length, pre_tokenized_input=pre_tokenized_input):
+        for token in generate_response_stream(None, tokenizer, model, max_length=max_token_length, temp=temp, pre_tokenized_input=pre_tokenized_input):
             response_tokens.append(token)
             yield token
 

@@ -20,7 +20,9 @@ def create_exercise():
 
     # Extract JSON data from the incoming request.
     data = request.json 
-    prompt = data.get("prompt", "")
+    max_token_length = data.get("maxTokenLength", "")
+    temp = data.get("temp", "")
+    prompt = data.get("systemPrompt", "")
     if not prompt:
         return jsonify({"error": "No prompt provided"}), 400
     
@@ -30,11 +32,9 @@ def create_exercise():
         cached_prompt = prompt
         pre_tokenized_prompt = tokenizer(prompt, return_tensors="pt")
 
-    # Generate a response using the pre-tokenized prompt
-    max_length = 75
     # Streaming function
     def stream():
-        for token in generate_response_stream(None, tokenizer, model, max_length=max_length, pre_tokenized_input=pre_tokenized_prompt):
+        for token in generate_response_stream(None, tokenizer, model, max_length=max_token_length, temp=temp, pre_tokenized_input=pre_tokenized_prompt):
             yield token
     
     # Stream the response
