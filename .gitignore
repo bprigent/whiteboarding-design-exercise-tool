@@ -6,6 +6,7 @@ transformers/
 
 # Exclude Hugging Face model files
 python_directory/llm_model/
+python_directory/llm_model_2/
 python_directory/llama_venv/
 python_directory/.cache/
 
