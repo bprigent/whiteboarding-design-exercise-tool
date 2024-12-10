@@ -5,19 +5,19 @@ import modelList from '../store/modelList';
 export async function createExercise(dispatch, experience, product, maturity, time) {
 
     // get the model
-    const modelSelected = modelList.find((model) => model.name === "Dieter 1.0");
-    const temp = modelSelected.exercise.temperature
-    const maxTokenLength = modelSelected.exercise.maxTokenLength
+    const modelSelected = modelList.find((model) => model.name === "Dieter 2.0");
+    const temperature = modelSelected.exercise.temperature
+    const maxOutputTokenLength = modelSelected.exercise.maxOutputTokenLength
+    const inputContextWindow = modelSelected.exercise.inputContextWindow
     const systemPrompt = modelSelected.exercise.prompt({ time, experience, product, maturity })
     
     const API_BASE_URL = "http://127.0.0.1:5000";
-    
     
     try {
         const response = await fetch(`${API_BASE_URL}/create-exercise`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ systemPrompt: systemPrompt, maxTokenLength: maxTokenLength, temp: temp }),
+            body: JSON.stringify({ systemPrompt: systemPrompt, maxOutputTokenLength: maxOutputTokenLength, temperature: temperature, inputContextWindow: inputContextWindow }),
         });
 
         if (!response.ok) {

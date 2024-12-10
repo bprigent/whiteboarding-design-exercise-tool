@@ -20,9 +20,10 @@ const timerSlice = createSlice({
             state.timerStatus = 'paused';
         },
         decrementTime: (state) => {
-            if (state.remainingTime > 0) {
+            if (state.remainingTime > 1) {
                 state.remainingTime -= 1;
             } else {
+                state.remainingTime = 0;
                 state.timerStatus = 'paused';
                 clearInterval(timerInterval);
             }

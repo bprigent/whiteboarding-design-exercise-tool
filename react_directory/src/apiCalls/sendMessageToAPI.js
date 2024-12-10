@@ -5,12 +5,12 @@ import modelList from '../store/modelList';
 const API_BASE_URL = "http://127.0.0.1:5000";
 
 // message history cleanup
-const optimizeMessageHistory = (messageHistory, userMessage) => {
+const optimizeMessageHistory = ({messageHistory, userMessage}) => {
     const cleanup = messageHistory
-    .map(({ author, content }) => `${author}: ${content}`) // Format each message
+    .map(({ author, content }) => `Author Name: ${author}, Author Message: ${content} --- `) // Format each message
     .join("\n"); // Use newline for better readability
 
-    const fullHistory = cleanup + "\nLatest user message: " + userMessage + "."
+    const fullHistory = "[" + cleanup + `Author Name: user, Author Last Message: ${userMessage}]`
 
     return fullHistory
 };
@@ -26,21 +26,24 @@ export const sendMessageToAPI = async ({ dispatch, userMessage, messageHistory, 
 
         
     try {
+        
+        const exo = exercise
 
         // Optimize the message history
-        const optimizedHistory = optimizeMessageHistory(messageHistory, userMessage);
+        const optimizedHistory = optimizeMessageHistory({messageHistory: messageHistory , userMessage: userMessage});
 
         // get the model
-        const modelSelected = modelList.find((model) => model.name === "Dieter 1.0");
-        const temp = modelSelected.message.temperature
-        const maxTokenLength = modelSelected.message.maxTokenLength
-        const systemPrompt = modelSelected.message.prompt({optimizedHistory, exercise})
+        const modelSelected = modelList.find((model) => model.name === "Dieter 2.0");
+        const temperature = modelSelected.message.temperature
+        const maxOutputTokenLength = modelSelected.message.maxOutputTokenLength
+        const inputContextWindow = modelSelected.message.inputContextWindow
+        const systemPrompt = modelSelected.message.prompt({optimizedHistory: optimizedHistory, exercise: exo})
 
         // send API request
         const response = await fetch(`${API_BASE_URL}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ systemPrompt: systemPrompt, temp: temp, maxTokenLength: maxTokenLength}),
+            body: JSON.stringify({ systemPrompt: systemPrompt, temperature: temperature, maxOutputTokenLength: maxOutputTokenLength, inputContextWindow: inputContextWindow}),
         });
 
         // if there is an issue, send error

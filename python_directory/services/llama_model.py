@@ -13,6 +13,10 @@ logger = logging.getLogger(__name__)
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 logger.info(f"Using device: {device}")
 
+
+
+
+
 ############################################################
 # load model
 def load_model(model_path):
@@ -71,10 +75,11 @@ class TokenStoppingCriteria(StoppingCriteria):
 
 ############################################################
 # Generate a response based on the given prompt or pre-tokenized input.
-def generate_response_stream(prompt, tokenizer, model, max_length, temp, pre_tokenized_input=None):
+def generate_response_stream(prompt, tokenizer, model, max_length, temperature, input_context_window, pre_tokenized_input=None):
     """
     Stream token-by-token responses for a given prompt.
     """
+
     # Use pre-tokenized input if available
     if pre_tokenized_input is not None:
         inputs = pre_tokenized_input
@@ -84,16 +89,12 @@ def generate_response_stream(prompt, tokenizer, model, max_length, temp, pre_tok
             return_tensors="pt",
             padding=True,
             truncation=True,
-            max_length=model.config.max_position_embeddings,
+            max_length=input_context_window,
         )
 
     # Move inputs to the detected device
     input_ids = inputs["input_ids"].to(device)
     attention_mask = inputs["attention_mask"].to(device)
-    
-    # log
-    logger.info(f"Input IDs shape: {inputs['input_ids'].shape}")
-    logger.info(f"Attention mask shape: {inputs['attention_mask'].shape}")
 
     for _ in range(max_length):
         try:
@@ -105,7 +106,7 @@ def generate_response_stream(prompt, tokenizer, model, max_length, temp, pre_tok
                 output_scores=True,
                 eos_token_id=tokenizer.eos_token_id,
                 use_cache=True,  # Enable KV caching, to go faster
-                temperature=temp, # temperature of the model
+                temperature=temperature, # temperature of the model
             )
 
             # Extract the new token
