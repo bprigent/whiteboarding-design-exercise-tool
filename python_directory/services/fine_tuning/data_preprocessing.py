@@ -8,7 +8,7 @@ import torch
 
 # Parameters
 DATA_FILE = os.path.join(os.path.dirname(__file__), 'training_data.jsonl')
-MODEL_PATH  = "/Users/prige/Desktop/llama_project/python_directory/llm_model" # Replace with another model name if needed
+MODEL_PATH  = "/Users/prige/Desktop/llama_project/python_directory/models/Llama-3.2-1B-Instruct" # Replace with another model name if needed
 
 
 # Force PyTorch to use CPU

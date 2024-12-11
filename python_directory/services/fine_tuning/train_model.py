@@ -8,9 +8,9 @@ import torch
 from datasets import load_from_disk
 
 # params
-MODEL_PATH  = "/Users/prige/Desktop/llama_project/python_directory/llm_model" # Replace with another model name if needed
+MODEL_PATH  = "/Users/prige/Desktop/llama_project/python_directory/models/Llama-3.2-1B-Instruct"
 DATASET_PATH = "/Users/prige/Desktop/llama_project/python_directory/services/fine_tuning/tokenized_dataset"
-OUTPUT_DIR = "/Users/prige/Desktop/llama_project/python_directory/llm_output_finetuned_model"
+OUTPUT_DIR = "/Users/prige/Desktop/llama_project/python_directory/models/llm_finetuned_model"
 
 # Force PyTorch to use CPU
 device = torch.device("cpu")

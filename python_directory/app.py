@@ -11,7 +11,7 @@ from routes.answer_chat import chat_bp  # Blueprint for handling chat responses
 from services.model_loader import load_model  # Function to load the language model and tokenizer
 
 # Import model paths configuration
-from config.config import logger, MODEL_PATH, MODEL_PATH_2, MODEL_PATH_3
+from config.config import logger, MODEL_PATH, MODEL_PATH_2, MODEL_PATH_3, MODEL_PATH_4
 
 
 
