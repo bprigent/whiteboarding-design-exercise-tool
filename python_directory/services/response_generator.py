@@ -37,6 +37,10 @@ def generate_response_stream(prompt, tokenizer, model, max_length, temperature, 
             truncation=True,      # Truncate input if it exceeds `input_context_window`
             max_length=input_context_window,
         )
+    
+    # test tokenized input
+    logger.info(f"Tokenized input IDs: {inputs['input_ids']}")
+    logger.info(f"Decoded tokenized input: {tokenizer.decode(inputs['input_ids'][0], skip_special_tokens=False)}")
 
     # Move inputs to the detected device (CPU, GPU, or MPS)
     input_ids = inputs["input_ids"].to(device)
@@ -54,6 +58,7 @@ def generate_response_stream(prompt, tokenizer, model, max_length, temperature, 
                 return_dict_in_generate=True,      # Return output as a dictionary for easier access
                 output_scores=True,                # Include scores for generated tokens
                 eos_token_id=tokenizer.eos_token_id,  # Stop generation when the EOS token is generated
+                pad_token_id=tokenizer.eos_token_id,
                 use_cache=True,                    # Enable KV (key-value) caching for faster generation
                 temperature=temperature,           # Control randomness of the output
             )

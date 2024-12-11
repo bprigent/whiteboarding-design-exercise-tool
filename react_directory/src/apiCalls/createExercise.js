@@ -5,7 +5,7 @@ import modelList from '../store/modelList';
 export async function createExercise(dispatch, experience, product, maturity, time) {
 
     // get the model
-    const modelSelected = modelList.find((model) => model.name === "Dieter 2.0");
+    const modelSelected = modelList.find((model) => model.name === "Dieter 3.0");
     const temperature = modelSelected.exercise.temperature
     const maxOutputTokenLength = modelSelected.exercise.maxOutputTokenLength
     const inputContextWindow = modelSelected.exercise.inputContextWindow

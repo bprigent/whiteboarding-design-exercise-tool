@@ -33,7 +33,7 @@ export const sendMessageToAPI = async ({ dispatch, userMessage, messageHistory, 
         const optimizedHistory = optimizeMessageHistory({messageHistory: messageHistory , userMessage: userMessage});
 
         // get the model
-        const modelSelected = modelList.find((model) => model.name === "Dieter 2.0");
+        const modelSelected = modelList.find((model) => model.name === "Dieter 3.0");
         const temperature = modelSelected.message.temperature
         const maxOutputTokenLength = modelSelected.message.maxOutputTokenLength
         const inputContextWindow = modelSelected.message.inputContextWindow

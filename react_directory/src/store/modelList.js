@@ -3,6 +3,31 @@ const modelList = [
 
 
 
+    {
+        name: "Dieter 3.0",
+        modelUrl: "",
+        description: "stupid model",
+        exercise: {
+            prompt: ({ time, experience, product, maturity }) => `
+                Generate a whiteboarding exercise.
+            `,
+            temperature: 1.0,
+            maxOutputTokenLength: 30,
+            inputContextWindow: 2048,
+        },
+        message: {
+            prompt:  ({optimizedHistory, exercise}) => `
+                ${optimizedHistory ? JSON.stringify(optimizedHistory, null, 2) : "No prior messages."}
+                Above is the history of the conversation with the user. Your taskL: answer the user.
+            `,
+            temperature: 1.0,
+            maxOutputTokenLength: 75,
+            inputContextWindow: 2048,
+        },
+    },
+
+
+
 
 
 

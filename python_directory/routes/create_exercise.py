@@ -46,6 +46,10 @@ def create_exercise():
         pre_tokenized_prompt = tokenizer(system_prompt, return_tensors="pt").to(device)
         logger.info("Prompt tokenized and moved to device.")
 
+        # Add these debug logs to inspect the tokenized input
+        logger.info(f"Tokenized input IDs: {pre_tokenized_prompt['input_ids']}")
+        logger.info(f"Decoded tokenized input: {tokenizer.decode(pre_tokenized_prompt['input_ids'][0], skip_special_tokens=False)}")
+
     # Streaming function for generating tokens
     def stream():
         logger.info("Starting token generation stream...")
