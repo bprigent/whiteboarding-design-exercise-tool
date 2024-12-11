@@ -10,7 +10,7 @@ from datasets import load_from_disk
 # params
 MODEL_PATH  = "/Users/prige/Desktop/llama_project/python_directory/models/Llama-3.2-1B-Instruct"
 DATASET_PATH = "/Users/prige/Desktop/llama_project/python_directory/services/fine_tuning/tokenized_dataset"
-OUTPUT_DIR = "/Users/prige/Desktop/llama_project/python_directory/models/llm_finetuned_model"
+OUTPUT_DIR = "/Users/prige/Desktop/llama_project/python_directory/models"
 
 # Force PyTorch to use CPU
 device = torch.device("cpu")
@@ -59,7 +59,7 @@ def main():
     trainer.train()
 
     # Save the model
-    trainer.save_model(f"{OUTPUT_DIR}/final_model")
+    trainer.save_model(f"{OUTPUT_DIR}/llm_finetuned_model")
 
 if __name__ == "__main__":
     main()

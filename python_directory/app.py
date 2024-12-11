@@ -13,13 +13,6 @@ from services.model_loader import load_model  # Function to load the language mo
 # Import model paths configuration
 from config.config import logger, MODEL_PATH, MODEL_PATH_2, MODEL_PATH_3, MODEL_PATH_4
 
-
-
-
-
-
-
-
 ########################################
 # Initialize Flask app
 app = Flask(__name__)  # Create an instance of the Flask application
@@ -30,25 +23,15 @@ CORS(app)  # Allow requests from different domains (e.g., frontend hosted on a d
 # Log the initialization of the Flask app
 logger.info("Flask app initialized and CORS enabled.")
 
-
-
-
-
-
 ########################################
 # Load the model and tokenizer before the app starts handling requests
 logger.info("Initializing model...")
 try:
-    tokenizer, model = load_model(MODEL_PATH_3)
+    tokenizer, model = load_model(MODEL_PATH_4)
     logger.info("Model initialized successfully.")
 except Exception as e:
     logger.error(f"Error initializing model: {e}")
     raise e  # Re-raise the exception to halt the application if model loading fails
-
-
-
-
-
 
 ########################################
 # Pass the model and tokenizer to the blueprints
@@ -59,11 +42,6 @@ chat_bp.tokenizer = tokenizer
 chat_bp.model = model
 logger.info("Model and tokenizer attached to blueprints successfully.")
 
-    
-
-
-
-
 ########################################
 # Register blueprints for routes
 logger.info("Registering blueprints...")
@@ -71,11 +49,6 @@ app.register_blueprint(create_exercise_bp)
 logger.info("create_exercise_bp blueprint registered.")
 app.register_blueprint(chat_bp)
 logger.info("chat_bp blueprint registered.")
-
-
-
-
-
 
 ########################################
 # Start the Flask development server

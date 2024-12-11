@@ -2,35 +2,18 @@ from flask import Blueprint, request, jsonify, Response, stream_with_context
 from services.response_generator import generate_response_stream
 from config.config import logger, device  # Import logger and device from config
 
-
-
-
-
-
 # Create a Blueprint for the "create-exercise" route
 create_exercise_bp = Blueprint("create_exercise", __name__)
-
-
-
-
-
-
 
 # Pre-tokenized prompt cache (initialize during app startup)
 pre_tokenized_prompt = None
 cached_prompt = None  # Track the original prompt
 
-
-
-
-
-
 # Define a route for handling POST requests to "/create-exercise"
 @create_exercise_bp.route("/create-exercise", methods=["POST"])
 def create_exercise():
     """Handle the POST request to create an exercise."""
-
-
+    
     # Access the tokenizer and model from the blueprint's attributes
     tokenizer = create_exercise_bp.tokenizer
     model = create_exercise_bp.model
