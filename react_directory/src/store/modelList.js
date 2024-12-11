@@ -44,15 +44,15 @@ const modelList = [
             `,
             temperature: 0.4,
             maxOutputTokenLength: 30,
-            inputContextWindow: 8000,
+            inputContextWindow: 16000,
         },
         message: {
             prompt:  ({optimizedHistory, exercise}) => `
                 ${optimizedHistory ? JSON.stringify(optimizedHistory, null, 2) : "No prior messages."}
-                This was the history of your conversation with a user.
+                Above is the history of the conversation with the user.
 
                 Instructions:
-                - You are a UX interviewer guiding a user during their design whiteboarding exercise interview. The exercise is: "${exercise}".
+                - You are a design interviewer guiding a user during their design whiteboarding exercise interview. The exercise is: "${exercise}".
                 - Your goal is to guide the user through the key steps of a whiteboarding exercise:
                     1. Define the problem.
                     2. Understand the user.
@@ -70,7 +70,7 @@ const modelList = [
             `,
             temperature: 0.5,
             maxOutputTokenLength: 75,
-            inputContextWindow: 8000,
+            inputContextWindow: 16000,
         },
     },
 

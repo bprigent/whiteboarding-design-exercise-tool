@@ -14,9 +14,6 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 logger.info(f"Using device: {device}")
 
 
-
-
-
 ############################################################
 # load model
 def load_model(model_path):

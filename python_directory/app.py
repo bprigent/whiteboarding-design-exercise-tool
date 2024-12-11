@@ -4,7 +4,8 @@ from flask_cors import CORS
 from routes.create_exercise import create_exercise_bp
 from routes.answer_chat import chat_bp
 from services.llama_model import load_model
-from config.config import MODEL_PATH
+from config.config import MODEL_PATH_2, MODEL_PATH, MODEL_PATH_3
+
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -12,7 +13,7 @@ CORS(app)  # Enable CORS
 
 # Load the model and tokenizer before the app starts handling requests
 print("Initializing model...")
-tokenizer, model = load_model(MODEL_PATH)
+tokenizer, model = load_model(MODEL_PATH_3)
 print("Model initialized successfully.")
 
 # Pass the model and tokenizer to the blueprints
