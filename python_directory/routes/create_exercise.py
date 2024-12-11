@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response, stream_with_context
-from services.llama_model import generate_response_stream
+from services.response_generator import generate_response_stream
 import logging
 
 # Configure logging
